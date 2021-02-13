@@ -1,0 +1,13 @@
+Package: SPMI
+Type: Package
+Title: Algorithms for synchronisation problems with multiple instances
+Version: 0.1
+Date: 2020-05-21
+Author: Dries Cornilly, Giovanni Puccetti, Ludger Rüschendorf, Steven Vanduffel
+Maintainer: Dries Cornilly <driescornilly@gmail.com>
+Description: Implements algorithms as in the paper 'On a synchronisation problem with multiple instances'.
+License: GPL-2 | GPL-3
+Imports: Rcpp (>= 1.0.2)
+LinkingTo: Rcpp, RcppArmadillo
+Encoding: UTF-8
+RoxygenNote: 7.1.1
