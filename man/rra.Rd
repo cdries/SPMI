@@ -5,7 +5,16 @@
 \alias{rra}
 \title{Rearrange multiple matrices}
 \usage{
-rra()
+rra(
+  x,
+  algo = "swap",
+  maxiter = 1e+05,
+  maxnoimprove = 1000,
+  eps = 1e-06,
+  p_block = 0.5,
+  n_preprocess = 3,
+  p_vec = NULL
+)
 }
 \description{
 wrapper function for rearrangement of multiple matrices
