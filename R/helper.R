@@ -1,23 +1,31 @@
 
 swapping_wrapper <- function(
   x, n_rows, d_cols, m_matrices, maxiter, maxnoimprove, eps
-  ) {
+) {
   
   # call swapping
-  out <- SPMI:::RRAswapping(x, maxiter, maxnoimprove, eps, n_rows, d_cols, m_matrices)
+  out <- RRAswapping(x, maxiter, maxnoimprove, eps, n_rows, d_cols, m_matrices)
+  
+  # Add output
+  out$Vopt <- out$V[1 + out$ksteps]
+  out$V <- out$V[1:(1 + out$ksteps)]
   
   return (out)
 }
 
 
 blockswapping_wrapper <- function(
-  x, n_rows, d_cols, m_matrices, maxiter, maxnoimprove, eps, p_block = 0.5
-  ) {
+  x, n_rows, d_cols, m_matrices, maxiter, maxnoimprove, eps, p_vec
+) {
   
   # call blockswapping
-  out <- SPMI:::RRAblockswapping(
-    x, maxiter, maxnoimprove, eps, n_rows, d_cols, m_matrices, p_block
-    )
+  out <- RRAblockswapping(
+    x, maxiter, maxnoimprove, eps, n_rows, d_cols, m_matrices, p_vec
+  )
+  
+  # Add output
+  out$Vopt <- out$V[1 + out$ksteps]
+  out$V <- out$V[1:(1 + out$ksteps)]
   
   return (out)
 }
@@ -25,7 +33,7 @@ blockswapping_wrapper <- function(
 
 custom_wrapper <- function(
   x, n_rows, d_cols, m_matrices, maxiter, maxnoimprove, eps, n_preprocess = 3, p_vec = NULL
-  ) {
+) {
   
   # Default percentage vec
   if (is.null(p_vec)) {
@@ -36,18 +44,22 @@ custom_wrapper <- function(
   }
   
   # call custom algorithm
-  out_custom1 <- SPMI:::RRAblockmincov(
+  out_preprocess <- RRAblockmincov(
     x, n_preprocess, n_preprocess, eps, n_rows, d_cols, m_matrices, rep(0.5, 3)
-    )
-  out <- SPMI:::RRAblockswapping(
-    SPMI:::RRArearrange(
-      x, out_custom1$pimat - 1, n_rows, d_cols, m_matrices), 
-    niter - n_preprocess, maxnoimprove, eps, n_rows, d_cols, m_matrices, alpha
-    )
+  )
+  out <- RRAblockswapping(
+    RRArearrange(
+      x, out_preprocess$pimat - 1, n_rows, d_cols, m_matrices
+    ), 
+    maxiter - n_preprocess, maxnoimprove, eps, n_rows, d_cols, m_matrices, alpha
+  )
   
   # Adapt output
-  # TODO
-  
+  out$Vopt <- out$V[1 + out$ksteps]
+  out$Vpreprop <- out_preprocess$V[1 + n_preprocess]
+  out$V <- c(out_preprocess$V, out$V[2:(1 + out$ksteps)])
+  out$ksteps <- out$ksteps + n_preprocess
+
   return (out)
 }
 
@@ -55,8 +67,11 @@ custom_wrapper <- function(
 random_wrapper <- function(x, n_rows, d_cols, m_matrices, maxiter, maxnoimprove, eps) {
   
   # call random algorithm
-  out <- SPMI:::RRArandom(x, maxiter, maxnoimprove, eps, n_rows, d_cols, m_matrices)
-  # TODO: adapt C++ code for maxnoimprove usage
+  out <- RRArandom(x, maxiter, maxnoimprove, eps, n_rows, d_cols, m_matrices)
+  
+  # Add output
+  out$Vopt <- out$V[1 + out$ksteps]
+  out$V <- out$V[1:(1 + out$ksteps)]
   
   return (out)
 }

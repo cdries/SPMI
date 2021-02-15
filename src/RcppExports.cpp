@@ -76,18 +76,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // RRArandom
-List RRArandom(Rcpp::NumericVector xx, int nsteps, double eps, int N, int D, int M);
-RcppExport SEXP _SPMI_RRArandom(SEXP xxSEXP, SEXP nstepsSEXP, SEXP epsSEXP, SEXP NSEXP, SEXP DSEXP, SEXP MSEXP) {
+List RRArandom(Rcpp::NumericVector xx, int nsteps, int maxnoimprove, double eps, int N, int D, int M);
+RcppExport SEXP _SPMI_RRArandom(SEXP xxSEXP, SEXP nstepsSEXP, SEXP maxnoimproveSEXP, SEXP epsSEXP, SEXP NSEXP, SEXP DSEXP, SEXP MSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xx(xxSEXP);
     Rcpp::traits::input_parameter< int >::type nsteps(nstepsSEXP);
+    Rcpp::traits::input_parameter< int >::type maxnoimprove(maxnoimproveSEXP);
     Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< int >::type D(DSEXP);
     Rcpp::traits::input_parameter< int >::type M(MSEXP);
-    rcpp_result_gen = Rcpp::wrap(RRArandom(xx, nsteps, eps, N, D, M));
+    rcpp_result_gen = Rcpp::wrap(RRArandom(xx, nsteps, maxnoimprove, eps, N, D, M));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -114,7 +115,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_SPMI_RRAblockswapping", (DL_FUNC) &_SPMI_RRAblockswapping, 8},
     {"_SPMI_RRArearrange", (DL_FUNC) &_SPMI_RRArearrange, 5},
     {"_SPMI_RRAmincov", (DL_FUNC) &_SPMI_RRAmincov, 8},
-    {"_SPMI_RRArandom", (DL_FUNC) &_SPMI_RRArandom, 6},
+    {"_SPMI_RRArandom", (DL_FUNC) &_SPMI_RRArandom, 7},
     {"_SPMI_RRAswapping", (DL_FUNC) &_SPMI_RRAswapping, 7},
     {NULL, NULL, 0}
 };

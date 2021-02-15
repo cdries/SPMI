@@ -7,13 +7,14 @@ using namespace Rcpp;
 
 
 // [[Rcpp::export]]
-List RRArandom(Rcpp::NumericVector xx, int nsteps, double eps, int N, int D, int M) {
+List RRArandom(Rcpp::NumericVector xx, int nsteps, int maxnoimprove, double eps, int N, int D, int M) {
   // Rearrangement of random matrices with a randomized algorithm
   // 
   // arguments:
   // xx       : R array of dimension 3 with the matrices to rearrange 
   //            over the 3rd dimension
-  // nsteps   : maximum number of attempted swaps before termination
+  // nsteps   : maximum number of attempted permutations before termination
+  // maxnoimprove : number of s
   // eps      : terminate if V < eps
   // N        : number of rows
   // D        : number of columns
@@ -27,7 +28,7 @@ List RRArandom(Rcpp::NumericVector xx, int nsteps, double eps, int N, int D, int
   //
   // author: Dries Cornilly
   
-  // set data into cube format, more efficient that reading in using arma::cube x
+  // set data into cube format, more efficient than reading in using arma::cube x
   arma::cube x(xx.begin(), N, D, M, false);       // y as cube of xx input
   
   // set initial variables
@@ -36,9 +37,12 @@ List RRArandom(Rcpp::NumericVector xx, int nsteps, double eps, int N, int D, int
   V(0) = tmpFn["V"];
   arma::umat pimat = arma::repelem(arma::regspace<arma::uvec>(0, N - 1), 1, D); // initial permutation
   
-  // iterate over the possible swaps, stop when termination criteria are met
+  // iterate over the possible permutations, stop when termination criteria are met
   int iter = 0;
-  while(iter < nsteps) {
+  int iternoimprove = 0;
+  bool converged = false;
+  int status = 2;
+  while(iter < nsteps && !converged) {
     
     arma::umat pimat_try = RRArandomperm(N, D);
     arma::cube x_new = RRArearrange(x, pimat_try, N, D, M);
@@ -47,8 +51,21 @@ List RRArandom(Rcpp::NumericVector xx, int nsteps, double eps, int N, int D, int
     if (Vtemp < V(iter)) {
       V(iter + 1) = Vtemp;
       pimat = pimat_try;
+      iternoimprove = 0;
+      
     } else {
       V(iter + 1) = V(iter);
+      iternoimprove++;
+    }
+    
+    // update convergence criterion
+    if (V(iter + 1) < eps) {
+      converged = true;
+      status = 0;
+    }
+    if (iternoimprove >= maxnoimprove) {
+      converged = true;
+      status = 1;
     }
     
     iter++;
@@ -60,6 +77,8 @@ List RRArandom(Rcpp::NumericVector xx, int nsteps, double eps, int N, int D, int
   out["x"] = x;
   out["V"] = V;
   out["pimat"] = pimat + 1;
+  out["ksteps"] = iter;
+  out["status"] = status;
   out["rS"] = rS;
   
   return out;

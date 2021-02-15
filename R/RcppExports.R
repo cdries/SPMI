@@ -17,8 +17,8 @@ RRAmincov <- function(xx, beta, nsteps, maxnoimprove, eps, N, D, M) {
     .Call('_SPMI_RRAmincov', PACKAGE = 'SPMI', xx, beta, nsteps, maxnoimprove, eps, N, D, M)
 }
 
-RRArandom <- function(xx, nsteps, eps, N, D, M) {
-    .Call('_SPMI_RRArandom', PACKAGE = 'SPMI', xx, nsteps, eps, N, D, M)
+RRArandom <- function(xx, nsteps, maxnoimprove, eps, N, D, M) {
+    .Call('_SPMI_RRArandom', PACKAGE = 'SPMI', xx, nsteps, maxnoimprove, eps, N, D, M)
 }
 
 RRAswapping <- function(xx, nsteps, maxnoimprove, eps, N, D, M) {

@@ -16,11 +16,33 @@ rra(
   p_vec = NULL
 )
 }
+\arguments{
+\item{x}{Initial matrices to rearrange, of dimension (n, d, m)}
+
+\item{algo}{Algorithm, one of ('swap', 'blockswap', 'custom', 'random')}
+
+\item{maxiter}{Maximum number of iterations to run the algorithm}
+
+\item{maxnoimprove}{If no immprovement after this many iterations, stop early}
+
+\item{eps}{Stop if the function value is lower than this}
+
+\item{p_block}{Percentage of rows in a block, either a numeric or a vector}
+
+\item{n_preprocess}{Number of pre-processing steps for the custom algorithm}
+
+\item{p_vec}{Vector with block-sizes (as percentage of total number of rows) for
+the custom algorithm}
+}
 \description{
 wrapper function for rearrangement of multiple matrices
 }
 \details{
-TODO
+There are currently four algorithms implemented: 1. swap 2. blockswap 3. custom and
+4. random. Each algorithm tries to minimize the average variance of the row-wise sums
+across the matrices.
+Control parameters include 'maxiter' for maximum number of iterations (default 1e5) and
+'eps' the tolerance to stop when V < eps (default 1e-6).
 }
 \references{
 Cornilly, D., Puccetti, G., Rüschendorf, L., & Vanduffel, S. (2021). 
