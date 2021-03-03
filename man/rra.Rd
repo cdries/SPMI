@@ -7,7 +7,7 @@
 \usage{
 rra(
   x,
-  algo = "swap",
+  algo = "blockswap",
   maxiter = 1e+05,
   maxnoimprove = 1000,
   eps = 1e-06,
@@ -19,7 +19,7 @@ rra(
 \arguments{
 \item{x}{Initial matrices to rearrange, of dimension (n, d, m)}
 
-\item{algo}{Algorithm, one of ('swap', 'blockswap', 'custom', 'random')}
+\item{algo}{Algorithm, one of ('blockswap', 'custom', 'random')}
 
 \item{maxiter}{Maximum number of iterations to run the algorithm}
 
@@ -38,8 +38,8 @@ the custom algorithm}
 wrapper function for rearrangement of multiple matrices
 }
 \details{
-There are currently four algorithms implemented: 1. swap 2. blockswap 3. custom and
-4. random. Each algorithm tries to minimize the average variance of the row-wise sums
+There are currently three algorithms implemented: 1. blockswap 2. custom and
+3. random. Each algorithm tries to minimize the average variance of the row-wise sums
 across the matrices.
 Control parameters include 'maxiter' for maximum number of iterations (default 1e5) and
 'eps' the tolerance to stop when V < eps (default 1e-6).

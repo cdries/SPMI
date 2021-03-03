@@ -5,7 +5,7 @@
 \alias{simulate}
 \title{Simulation scenario used in the paper}
 \usage{
-simulate(n, d = 2, m = 2, rho = 0.5, normalise = FALSE)
+simulate(n, d = 2, m = 2, rho = 0.5, normalise = FALSE, tdist = FALSE)
 }
 \arguments{
 \item{n}{number of rows}
@@ -17,6 +17,8 @@ simulate(n, d = 2, m = 2, rho = 0.5, normalise = FALSE)
 \item{rho}{correlation parameter}
 
 \item{normalise}{whether to ensure a V=0 solution exists}
+
+\item{tdist}{whether to use marginals that are t-distributed or Gaussian}
 }
 \description{
 simulate multiple matrices

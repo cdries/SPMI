@@ -10,14 +10,17 @@
 #' @param m number of matrices
 #' @param rho correlation parameter 
 #' @param normalise whether to ensure a V=0 solution exists
+#' @param tdist whether to use marginals that are t-distributed or Gaussian
 #' @author Dries Cornilly
 #' @references
 #' Cornilly, D., Puccetti, G., Rüschendorf, L., & Vanduffel, S. (2021). 
 #' On a synchronization problem with multiple instances.
 #'
 #' @importFrom stats rnorm
+#' @importFrom stats pnorm
+#' @importFrom stats qt
 #' @export simulate
-simulate <- function(n, d = 2, m = 2, rho = 0.5, normalise=FALSE) {
+simulate <- function(n, d = 2, m = 2, rho = 0.5, normalise=FALSE, tdist=FALSE) {
   
   # cross-matrix covariance matrix
   Sigma <- matrix(rho, nrow = m, ncol = m)
@@ -42,6 +45,11 @@ simulate <- function(n, d = 2, m = 2, rho = 0.5, normalise=FALSE) {
     for (ii in 1:d) {
       x[, ii,] <- x[sample(n), ii,]
     }
+  }
+  
+  if (tdist) {
+    nu <- 5
+    x <- stats::qt(stats::pnorm(x), nu)
   }
   
   return (x)
