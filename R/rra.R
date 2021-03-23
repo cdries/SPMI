@@ -24,7 +24,7 @@
 #' @author Dries Cornilly
 #' @references
 #' Cornilly, D., Puccetti, G., Rüschendorf, L., & Vanduffel, S. (2021). 
-#' On a synchronization problem with multiple instances.
+#' On some synchronization problems with multiple instances.
 #'
 #' @import Rcpp
 #' @useDynLib SPMI

@@ -46,7 +46,7 @@ Control parameters include 'maxiter' for maximum number of iterations (default 1
 }
 \references{
 Cornilly, D., Puccetti, G., Rüschendorf, L., & Vanduffel, S. (2021). 
-On a synchronization problem with multiple instances.
+On some synchronization problems with multiple instances.
 }
 \author{
 Dries Cornilly
